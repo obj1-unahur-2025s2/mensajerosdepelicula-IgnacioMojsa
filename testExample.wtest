@@ -1,9 +1,38 @@
-import example.pepita
+import mensajeros.*
+import vehiculos.*
+import Destinos.*
+import paquetes.*
 
-describe "group of tests for pepita" {
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
-  }
+test "Roberto (90kg) puede llevar un paquete que está pago en un camión que tiene un acoplado"{
+    roberto.cambiarVehiculo(camion)
+    camion.cambiarAcoplados(1)
+    paquete.pagarPaquete()
+    assert.that(roberto.entregarUnPaqueteEn(paquete, puenteBrooklyn))
+}
 
+test "Neo con crédito no puede llevar un paquete que no está pago a la matrix" {
+  neo.cargarCredito()
+  assert.notThat(neo.entregarUnPaqueteEn(paquete, matrix))
+}
+
+test "La empresa de mensajeria contrata a Neo y Roberto por lo que aun no es una mensajeria grande" {
+  empresaDeMensajeria.contratarMensajero(neo)
+  empresaDeMensajeria.contratarMensajero(roberto)
+  assert.notThat(empresaDeMensajeria.esMensajeriaGrande())
+}
+
+test "La empresa de mensajeria decide contratar a Neo, Roberto y Chuck, luego analizan cual es el peso del ultimo mensajero que contrataron" {
+  empresaDeMensajeria.contratarMensajero(neo)
+  empresaDeMensajeria.contratarMensajero(roberto)
+  empresaDeMensajeria.contratarMensajero(chuckNorris)
+  assert.equals(80, empresaDeMensajeria.pesoDelUltimoMensajero())
+}
+
+test "La empresa de mensajeria contrata a Roberto con su camion y a Chuck para que entreguen un paquete en Brooklyn si pueden" {
+  paquete.pagarPaquete()
+  roberto.cambiarVehiculo(camion)
+  empresaDeMensajeria.contratarMensajero(roberto)
+  empresaDeMensajeria.contratarMensajero(chuckNorris)
+  assert.that(empresaDeMensajeria.algunMensajeroPuedeEntregarEn(paquete, puenteBrooklyn))
 }
