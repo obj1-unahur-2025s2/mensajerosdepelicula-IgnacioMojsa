@@ -47,6 +47,8 @@ object neo {
 
 object empresaDeMensajeria {
     const mensajeros = [] 
+    const paquetesEnviados = []
+    const paquetesPendientes = []  
     method contratarMensajero(unMensajero) {
         mensajeros.add(unMensajero)
     }
@@ -71,4 +73,24 @@ object empresaDeMensajeria {
     method mensajerosQuPuedenLlevarUnPaqueteA(unPaquete, unLugar){
         return mensajeros.filter({m => m.entregarUnPaqueteEn(unPaquete, unLugar)})
     } 
+    method tieneSoprepeso(){
+        return mensajeros.sum({m => m.peso()}) > 500
+    } 
+    method enviarPaqueteA(unPaquete, unDestino) {
+        if(self.algunMensajeroPuedeEntregarEn(unPaquete, unDestino)){
+            paquetesEnviados.add(unPaquete)
+        }
+        else{
+            paquetesPendientes.add(unPaquete)
+        }
+    }
+    method facturacionDeEmpresa(){
+        return paquetesEnviados.fold(0, {p => p.precio()})
+    } 
+    method encontrarYEnviarPaquetePendienteMasCaroA(unLugar){
+        self.enviarPaqueteA(self.paquetesPendienteMasCaro(), unLugar)
+    }
+    method paquetesPendienteMasCaro(){
+        return paquetesPendientes.find(paquetesPendientes.max({p => p.precio()}))
+    }
 }
