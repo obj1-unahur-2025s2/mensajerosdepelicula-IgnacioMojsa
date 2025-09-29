@@ -9,3 +9,9 @@ object matrix {
     return unMensajero.puedeLlamar()
   } 
 }
+
+object buenosAires {
+  method puedeAcceder(){
+    
+  } 
+}
